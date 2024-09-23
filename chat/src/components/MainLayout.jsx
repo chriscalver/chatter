@@ -19,8 +19,8 @@ async function myStopFunction() {
   const jsonDistance2 = json2[2].name;
   tempDistance = jsonDistance2;
   // setJsonData(jsonDistance2);
-  //  console.log(tempDistance);  
-//  return jsonDistance2;
+  //  console.log(tempDistance);
+  //  return jsonDistance2;
 }
 
 export default function MainLayout() {
@@ -28,24 +28,34 @@ export default function MainLayout() {
   const [currentTime, setcurrentTime] = useState(new Date().getTime());
   const [eventMessage, setEventMessage] = useState("Starts in");
   const [eventStart, setEventStart] = useState(false);
+  const [eventEnd, setEventEnd] = useState(false);
+
   const [jsonData, setJsonData] = useState(jsonDistance);
   // console.log(jsonData);
-  // const myTimeout = setTimeout(myStopFunction, 10000); 
+  // const myTimeout = setTimeout(myStopFunction, 10000);
 
   const now = new Date().getTime();
   // const raceDate = new Date("Sep 20, 2024 10:54:00").getTime();
 
   const raceDate = new Date("Sep 21, 2024 08:00:00").getTime();
+  const raceEnd = new Date("Sep 22, 2024 08:00:00").getTime();
+
   var gap = 0;
 
   // console.log(eventStart);
   if (now >= raceDate) {
     // console.log("countdown");
     gap = currentTime - raceDate;
+
     if (eventMessage === "Starts in") {
       setEventMessage("Has Started!!!");
       setEventStart(true);
+      if (now >= raceEnd) {
+        setEventEnd(true);
+        setEventMessage("Has Ended!!!");
+      }
     }
+
   } else {
     // console.log("countdown");
     gap = raceDate - currentTime;
@@ -62,10 +72,10 @@ export default function MainLayout() {
 
   useEffect(() => {
     setTimeout(() => setcurrentTime(new Date().getTime()), 1000);
-    setTimeout(myStopFunction, 5000);
+    setTimeout(myStopFunction, 1000);
 
-     setJsonData(tempDistance);
-      //  console.log(jsonDistance2);
+    setJsonData(tempDistance);
+    //  console.log(jsonDistance2);
 
     // setTimeout(
     // setTimeout(() => setJsonData(
@@ -103,11 +113,17 @@ export default function MainLayout() {
             </center>
 
             <center>
-              <h1 className="header3">Distance</h1>
-              <div style={{ width: 150, height: 150, marginRight: 0 }}>
+              <div
+                style={{
+                  width: 150,
+                  height: 150,
+                  marginRight: 0,
+                  marginTop: 20,
+                }}
+              >
                 <CircularProgressbar
                   // value={YTDpercentage}
-                  value={jsonData}
+                  value={jsonData / 1.25}
                   // text={`${YTDpercentage.toFixed()}%`}
                   text={jsonData + "kms"}
                   styles={{
@@ -153,6 +169,8 @@ export default function MainLayout() {
                 />
               </div>
               <div>
+                <h1 className="header3">Final Distance</h1>
+                <h3 className="">Goal 125kms</h3>
                 {/* <img src={reactLogo4} width="100" style={{ marginRight: 30 }}/> */}
               </div>{" "}
             </center>
